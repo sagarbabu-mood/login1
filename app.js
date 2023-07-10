@@ -11,9 +11,7 @@ const databasePath = path.join(__dirname, "usersData.db");
 const app = express();
 
 app.use(express.json());
-app.use(cors({
-    origin: "*",
-}));
+app.use(cors());
 
 let database = null;
 
@@ -25,7 +23,7 @@ const initializeDbAndServer = async () => {
         });
         console.log(process.env.PORT)
         app.listen(process.env.PORT || 3999, () =>
-            console.log("Server Running at http://localhost:3009/")
+            console.log("Server Running at http://localhost:3999/")
         );
 
     } catch (error) {
