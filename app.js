@@ -92,15 +92,15 @@ app.post("/register", async (request, response) => {
     if (databaseUser === undefined) {
         const createUserQuery = `
     INSERT INTO
-      user (username, name, password, gender, location)
-     VALUES
-      (
-       '${username}',
-       '${name}',
-       '${hashedPassword}',
-       '${gender}',
-       '${location}'  
-      );`;
+        user (username, name, password, gender, location)
+        VALUES
+        (
+        '${username}',
+        '${name}',
+        '${hashedPassword}',
+        '${gender}',
+        '${location}'  
+        );`;
         if (validatePassword(password)) {
             await database.run(createUserQuery);
             response.send("User created successfully");
