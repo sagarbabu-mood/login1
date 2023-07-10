@@ -4,11 +4,11 @@ POST http://localhost:3999/register
 Content-Type: application/json 
 
 {
-  "username": "saara",
-  "name": "Adam Richard",
-  "password": "123Kadafd",
-  "gender": "male",
-  "location": "Detroit"
+  "username": "sagar",
+  "name": "Sagar Babu",
+  "password": "sagar@babu",
+  "gender": "Male",
+  "location": "Khammam"
 }
 
 ###
@@ -18,8 +18,8 @@ GET http://localhost:3004/
 POST http://localhost:3999/login/
 Content-Type: application/json
 
-{ "username": "saara",
-  "password": "123Kadafd"  
+{ "username": "sagar",
+  "password": "sagar@babu"  
 }
 
 ###
