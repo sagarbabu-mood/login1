@@ -1,7 +1,7 @@
 {
   "name": "node-js-application",
   "version": "1.0.0",
-  "description": "sagar",
+  "description": "",
   "main": "app.js",
   "scripts": {
     "test": "nodemon app.js"

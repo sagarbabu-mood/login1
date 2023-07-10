@@ -1,6 +1,6 @@
 ###
 
-POST http://localhost:3004/register
+POST http://localhost:3999/register
 Content-Type: application/json 
 
 {
@@ -13,3 +13,20 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3004/
+
+###
+POST http://localhost:3999/login/
+Content-Type: application/json
+
+{ "username": "saara",
+  "password": "123Kadafd"  
+}
+
+###
+POST http://localhost:3004/register
+Content-Type: application/json 
+
+{
+  "username": "saara",
+  "password": "123Kadafd"
+}

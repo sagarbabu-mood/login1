@@ -11,12 +11,9 @@ const databasePath = path.join(__dirname, "usersData.db");
 const app = express();
 
 app.use(express.json());
-app.use(
-    cors({
-        origin: "*",
-    })
-);
-
+app.use(cors({
+    origin: "*",
+}));
 
 let database = null;
 
@@ -26,10 +23,11 @@ const initializeDbAndServer = async () => {
             filename: databasePath,
             driver: sqlite3.Database,
         });
-
-        app.listen(3004, () =>
-            console.log("Server Running at http://localhost:3004/")
+        console.log(process.env.PORT)
+        app.listen(process.env.PORT || 3999, () =>
+            console.log("Server Running at http://localhost:3009/")
         );
+
     } catch (error) {
         console.log(`DB Error: ${error.message}`);
         process.exit(1);
@@ -63,7 +61,7 @@ function authenticateToken(request, response, next) {
     }
 }
 
-app.post("/login/", async (request, response) => {
+app.post("/login", async (request, response) => {
     const { username, password } = request.body;
     const selectUserQuery = `SELECT * FROM user WHERE username = '${username}';`;
     const databaseUser = await database.get(selectUserQuery);
