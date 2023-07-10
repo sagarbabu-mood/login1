@@ -1,0 +1,15 @@
+###
+
+POST http://localhost:3004/register
+Content-Type: application/json 
+
+{
+  "username": "saara",
+  "name": "Adam Richard",
+  "password": "123Kadafd",
+  "gender": "male",
+  "location": "Detroit"
+}
+
+###
+GET http://localhost:3004/
