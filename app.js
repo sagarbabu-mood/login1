@@ -97,17 +97,14 @@ app.post("/login", async (request, response) => {
 app.post("/register", async (request, response) => {
     const { username, name, password, gender, location } = request.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const selectUserQuery = `SELECT * FROM user WHERE username = '${username}';`;
-    const databaseUser = await database.get(selectUserQuery);
+    const selectUserQuery = `SELECT * FROM user WHERE username = ?;`;
+    const databaseUser = await database.get(selectUserQuery, [username]);
 
     if (databaseUser === undefined) {
         const createUserQuery = `
-        INSERT INTO
-            user (username, name, password, gender, location)
-            VALUES
-        (?, ?, ?, ?, ?);
-        `;
-
+        INSERT INTO user (username, name, password, gender, location)
+        VALUES (?, ?, ?, ?, ?);
+    `;
         if (validatePassword(password)) {
             await database.run(createUserQuery, [
                 username,
@@ -126,6 +123,7 @@ app.post("/register", async (request, response) => {
         response.send("User already exists");
     }
 });
+
 
 
 module.exports = app
