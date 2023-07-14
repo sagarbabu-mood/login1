@@ -33,8 +33,8 @@ const initializeDbAndServer = async () => {
         );
     `);
 
-        app.listen(3000, () =>
-            console.log("Server Running at http://localhost:3000/")
+        app.listen(3999, () =>
+            console.log("Server Running at http://localhost:3999/")
         );
     } catch (error) {
         console.log(`DB Error: ${error.message}`);
@@ -102,16 +102,12 @@ app.post("/register", async (request, response) => {
 
     if (databaseUser === undefined) {
         const createUserQuery = `
-    INSERT INTO
-        user (username, name, password, gender, location)
-        VALUES
-        (
-        '${username}',
-        '${name}',
-        '${hashedPassword}',
-        '${gender}',
-        '${location}'  
-        );`;
+        INSERT INTO
+            user (username, name, password, gender, location)
+            VALUES
+        (?, ?, ?, ?, ?);
+        `;
+
         if (validatePassword(password)) {
             await database.run(createUserQuery, [
                 username,
@@ -131,3 +127,5 @@ app.post("/register", async (request, response) => {
     }
 });
 
+
+module.exports = app
