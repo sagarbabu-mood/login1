@@ -23,14 +23,14 @@ const initializeDbAndServer = async () => {
         });
 
         await database.exec(`
-      CREATE TABLE IF NOT EXISTS user (
+        CREATE TABLE IF NOT EXISTS user (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT NOT NULL,
         name TEXT NOT NULL,
         password TEXT NOT NULL,
         gender TEXT NOT NULL,
         location TEXT NOT NULL
-      );
+        );
     `);
 
         app.listen(3000, () =>
@@ -113,7 +113,13 @@ app.post("/register", async (request, response) => {
         '${location}'  
         );`;
         if (validatePassword(password)) {
-            await database.run(createUserQuery);
+            await database.run(createUserQuery, [
+                username,
+                name,
+                hashedPassword,
+                gender,
+                location,
+            ]);
             response.send("User created successfully");
         } else {
             response.status(400);
