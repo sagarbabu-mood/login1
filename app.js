@@ -21,11 +21,21 @@ const initializeDbAndServer = async () => {
             filename: databasePath,
             driver: sqlite3.Database,
         });
-        console.log(process.env.PORT)
-        app.listen(process.env.PORT || 3999, () =>
-            console.log("Server Running at http://localhost:3999/")
-        );
 
+        await database.exec(`
+      CREATE TABLE IF NOT EXISTS user (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT NOT NULL,
+        name TEXT NOT NULL,
+        password TEXT NOT NULL,
+        gender TEXT NOT NULL,
+        location TEXT NOT NULL
+      );
+    `);
+
+        app.listen(3000, () =>
+            console.log("Server Running at http://localhost:3000/")
+        );
     } catch (error) {
         console.log(`DB Error: ${error.message}`);
         process.exit(1);
