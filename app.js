@@ -69,6 +69,42 @@ function authenticateToken(request, response, next) {
     }
 }
 
+
+// Register API 
+// Register API 
+app.post("/register", async (request, response) => {
+    const { username, name, password, gender, location } = request.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const selectUserQuery = `SELECT * FROM user WHERE username = ?;`;
+    const databaseUser = await database.get(selectUserQuery, [username]);
+
+    if (databaseUser === undefined) {
+        const createUserQuery = `
+            INSERT INTO user (username, name, password, gender, location)
+            VALUES (?, ?, ?, ?, ?);
+        `;
+
+        if (validatePassword(password)) {
+            await database.run(createUserQuery, [
+                username,
+                name,
+                hashedPassword,
+                gender,
+                location,
+            ]);
+            response.send("User created successfully");
+        } else {
+            response.status(400);
+            response.send("Password is too short");
+        }
+    } else {
+        response.status(400);
+        response.send("User already exists");
+    }
+});
+
+
+// Login API
 app.post("/login", async (request, response) => {
     const { username, password } = request.body;
     const selectUserQuery = `SELECT * FROM user WHERE username = '${username}';`;
@@ -94,35 +130,5 @@ app.post("/login", async (request, response) => {
     }
 });
 
-app.post("/register", async (request, response) => {
-    const { username, name, password, gender, location } = request.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const selectUserQuery = `SELECT * FROM user WHERE username = ?;`;
-    const databaseUser = await database.get(selectUserQuery, [username]);
-
-    if (databaseUser === undefined) {
-
-        const createUserQuery = `
-        INSERT INTO user (username, name, password, gender, location)
-        VALUES (?, ?, ?, ?, ?);
-    `;
-        if (validatePassword(password)) {
-            await database.run(createUserQuery, [
-                username,
-                name,
-                hashedPassword,
-                gender,
-                location,
-            ]);
-            response.send("User created successfully");
-        } else {
-            response.status(400);
-            response.send("Password is too short");
-        }
-    } else {
-        response.status(400);
-        response.send("User already exists");
-    }
-});
 
 module.exports = app
