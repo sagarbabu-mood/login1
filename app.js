@@ -101,6 +101,7 @@ app.post("/register", async (request, response) => {
     const databaseUser = await database.get(selectUserQuery, [username]);
 
     if (databaseUser === undefined) {
+
         const createUserQuery = `
         INSERT INTO user (username, name, password, gender, location)
         VALUES (?, ?, ?, ?, ?);
@@ -123,7 +124,5 @@ app.post("/register", async (request, response) => {
         response.send("User already exists");
     }
 });
-
-
 
 module.exports = app
