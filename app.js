@@ -71,7 +71,7 @@ app.post("/register", async (request, response) => {
         }
     } else {
         response.status(400);
-        response.send("User already exists");
+        response.send("Another account is running on this GMail");
     }
 });
 
@@ -90,7 +90,7 @@ app.post("/login", async (request, response) => {
     const databaseUser = await database.get(selectUserQuery);
     if (databaseUser === undefined) {
         response.status(400);
-        response.send("Invalid user");
+        response.send("Invalid GMail");
     } else {
         const isPasswordMatched = await bcrypt.compare(password, databaseUser.password);
         if (isPasswordMatched === true) {
