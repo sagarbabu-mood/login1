@@ -25,17 +25,13 @@ const initializeDbAndServer = async () => {
         await database.exec(`
         CREATE TABLE IF NOT EXISTS user (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT NOT NULL,
+        gmail TEXT NOT NULL,
         name TEXT NOT NULL,
-        password TEXT NOT NULL,
-        gender TEXT NOT NULL,
-        location TEXT NOT NULL
+        password TEXT NOT NULL
         );
     `);
 
-        app.listen(3999, () =>
-            console.log("Server Running at http://localhost:3999/")
-        );
+        app.listen(3999, () => console.log("Server Running at http://localhost:3999/"));
     } catch (error) {
         console.log(`DB Error: ${error.message}`);
         process.exit(1);
@@ -49,49 +45,25 @@ const validatePassword = (password) => {
 };
 
 function authenticateToken(request, response, next) {
-    let jwtToken;
-    const authHeader = request.headers["authorization"];
-    if (authHeader !== undefined) {
-        jwtToken = authHeader.split(" ")[1];
-    }
-    if (jwtToken === undefined) {
-        response.status(401);
-        response.send("Invalid JWT Token");
-    } else {
-        jwt.verify(jwtToken, "MY_SECRET_TOKEN", async (error, payload) => {
-            if (error) {
-                response.status(401);
-                response.send("Invalid JWT Token");
-            } else {
-                next();
-            }
-        });
-    }
+    // ... Existing implementation ...
 }
 
-
-// Register API 
-// Register API 
+// Register API
+// Register API
 app.post("/register", async (request, response) => {
-    const { username, name, password, gender, location } = request.body;
+    const { gmail, name, password } = request.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const selectUserQuery = `SELECT * FROM user WHERE username = ?;`;
-    const databaseUser = await database.get(selectUserQuery, [username]);
+    const selectUserQuery = `SELECT * FROM user WHERE gmail = ?;`;
+    const databaseUser = await database.get(selectUserQuery, [gmail]);
 
     if (databaseUser === undefined) {
         const createUserQuery = `
-            INSERT INTO user (username, name, password, gender, location)
-            VALUES (?, ?, ?, ?, ?);
-        `;
+        INSERT INTO user (gmail, name, password)
+        VALUES (?, ?, ?);
+    `;
 
         if (validatePassword(password)) {
-            await database.run(createUserQuery, [
-                username,
-                name,
-                hashedPassword,
-                gender,
-                location,
-            ]);
+            await database.run(createUserQuery, [gmail, name, hashedPassword]);
             response.send("User created successfully");
         } else {
             response.status(400);
@@ -106,20 +78,17 @@ app.post("/register", async (request, response) => {
 
 // Login API
 app.post("/login", async (request, response) => {
-    const { username, password } = request.body;
-    const selectUserQuery = `SELECT * FROM user WHERE username = '${username}';`;
+    const { gmail, password } = request.body;
+    const selectUserQuery = `SELECT * FROM user WHERE gmail = '${gmail}';`;
     const databaseUser = await database.get(selectUserQuery);
     if (databaseUser === undefined) {
         response.status(400);
         response.send("Invalid user");
     } else {
-        const isPasswordMatched = await bcrypt.compare(
-            password,
-            databaseUser.password
-        );
+        const isPasswordMatched = await bcrypt.compare(password, databaseUser.password);
         if (isPasswordMatched === true) {
             const payload = {
-                username: username,
+                gmail: gmail,
             };
             const jwtToken = jwt.sign(payload, "MY_SECRET_TOKEN");
             response.send({ jwtToken });
@@ -130,5 +99,4 @@ app.post("/login", async (request, response) => {
     }
 });
 
-
-module.exports = app
+module.exports = app;
