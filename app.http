@@ -4,21 +4,19 @@ POST http://localhost:3999/register
 Content-Type: application/json 
 
 {
-  "username": "rahula",
+  "gmail": "s@gmail.com",
   "name": "Sagar Babu",
-  "password": "sagar@babu",
-  "gender": "Male",
-  "location": "Khammam"
+  "password": "sagar@babu"
 }
 
 ###
-GET http://localhost:3004/
+GET http://localhost:3999/users
 
 ###
 POST http://localhost:3999/login/
 Content-Type: application/json
 
-{ "username": "rahula",
+{ "gmail": "s@gmail.com",
   "password": "sagar@babu"  
 }
 

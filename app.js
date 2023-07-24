@@ -75,6 +75,13 @@ app.post("/register", async (request, response) => {
     }
 });
 
+app.get("/users", async (request, response) => {
+    const getQuery = `select * from user;`
+    console.log(getQuery)
+    const data = await database.all(getQuery)
+    console.log(data)
+    response.send(data)
+})
 
 // Login API
 app.post("/login", async (request, response) => {
