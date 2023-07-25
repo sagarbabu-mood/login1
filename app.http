@@ -13,10 +13,26 @@ Content-Type: application/json
 GET http://localhost:3999/users
 
 ###
+POST http://localhost:3999/register
+Content-Type: application/json 
+
+{
+  "gmail": "sagar@gmail.com",
+  "name": "Sagar Babu",
+  "password": "sagar@babu"
+}
+
+###
+DELETE http://localhost:3999/delete
+Content-Type: application/json
+
+{ "gmail": "sagar@gmail.com"}
+
+###
 POST http://localhost:3999/login/
 Content-Type: application/json
 
-{ "gmail": "s@gmail.com",
+{ "gmail": "sagar@gmail.com",
   "password": "sagar@babu"  
 }
 

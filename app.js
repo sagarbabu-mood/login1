@@ -106,4 +106,13 @@ app.post("/login", async (request, response) => {
     }
 });
 
+app.delete("/delete", async (request, response) => {
+    const { gmail } = request.body
+    const deleteQuery = `DELETE from user where gmail='${gmail}';`
+    console.log(deleteQuery)
+    await database.run(deleteQuery)
+    response.send("Account removed")
+
+})
+
 module.exports = app;
